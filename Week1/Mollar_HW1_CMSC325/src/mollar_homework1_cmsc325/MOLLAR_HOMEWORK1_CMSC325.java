@@ -32,7 +32,7 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
     JButton btnHeads;                                       // Button for "Heads" Selection - Manual
     JButton btnTails;                                       // Button for "Tails" Selection - Manual
     JButton btnProb;                                        // Button for "Probability" Selection - Manual
-    JRadioButton radioAuto;                                 // Radio Button for "Auto" Run of Game
+    JButton btnAuto;                                        // Radio Button for "Auto" Run of Game
     final JTextArea tossResultText;                         // Main Text Area - Toss Results Displayed here
     final JTextArea welcome;                                // Welcome Text for user
     static JScrollPane scroll;                             // Scroll Option for tossResultText
@@ -43,6 +43,10 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
     String guessString;                                     // Holds user guesses - string
     int autoWins;                                           // Holds the number of wins for the Automatic feature
     int autoLosses;                                         // Holds the number of losses for the Automatic feature
+    int heads;
+    int tails;
+    int headsR;
+    int tailsR;
     ArrayList<String> resultData;                           // Holds the string values of all results for auto plays
     ArrayList<Integer> openData;                            // Holds the int values of results retrieved from save file
     ArrayList<Integer> resultIntData;                       // Holds the int values of results for probability plays
@@ -53,15 +57,16 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
     public MOLLAR_HOMEWORK1_CMSC325() 
     {
         super(new BorderLayout());
-
+        
         welcome = new JTextArea("Instructions");
         welcome.setPreferredSize(new Dimension(300, 80));
         welcome.setText("Beginning Text Area");
         add(welcome, BorderLayout.PAGE_START);
 
-        radioAuto = new JRadioButton("Automatic");
-        add(radioAuto, BorderLayout.PAGE_START);
-        radioAuto.addActionListener(this);
+        btnAuto = new JButton("Automatic");
+        btnAuto.setPreferredSize(new Dimension(300, 80));
+        add(btnAuto, BorderLayout.PAGE_START);
+        btnAuto.addActionListener(this);
 
         btnProb = new JButton("Probability");
         btnProb.setPreferredSize(new Dimension(180, 80));
@@ -79,10 +84,10 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
         add(btnTails, BorderLayout.LINE_END);
         btnTails.addActionListener(this);
 
-        tossResultText = new JTextArea("Instructions");
-        tossResultText.setText("Ending Text Area");
+        tossResultText = new JTextArea();
+//        tossResultText.setText("Ending Text Area");
         tossResultText.setLineWrap(true);
-
+        
         scroll = new JScrollPane(tossResultText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(400, 300));
         add(scroll, BorderLayout.PAGE_END);
@@ -94,6 +99,7 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
 
         sbProbResult = new StringBuilder();
         sbProbGuess = new StringBuilder();
+        
 
     }// MOLLAR_HOMEWORK1_CMSC325
 
@@ -155,10 +161,12 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                         {
                             tossResultText.append("\n" + "Your Choice: Heads! Actual Toss: " + flipResult + "... Sorry, You Lose :(");
                         } // else
+                        
 
                         break;
 
                     case "TAILS TOSS":
+                        
                         choice = 1;
                         ProcessFlip tailsFlip = new ProcessFlip();
                         tailsFlip.tossCoin();
@@ -188,6 +196,10 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                         int count = 0;
                         autoWins = 0;
                         autoLosses = 0;
+                        heads = 0;
+                        tails = 0;
+                        headsR = 0;
+                        tailsR = 0;
 
                         StrategyRandom autoToss = new StrategyRandom();
                         ProcessFlip autoFlip = new ProcessFlip();
@@ -218,12 +230,15 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                                 {
                                     tossResultText.append("... You Win!");
                                     autoWins++;
+                                    headsR++;
 
                                 } else 
                                 {
                                     tossResultText.append("... Sorry, You Lose :(");
                                     autoLosses++;
+                                    tailsR++;
                                 }
+                                heads++;
                                 
                             } else 
                             {
@@ -234,18 +249,23 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                                 {
                                     tossResultText.append("... You Win!");
                                     autoWins++;
+                                    tailsR++;
                                 } 
                                 else 
                                 {
                                     tossResultText.append("... Sorry, You Lose :(");
                                     autoLosses++;
+                                    headsR++;
                                 }
+                                tails++;
                             }
                             count++;
 
                         }
                         //Displays toss results to user
                         tossResultText.append("\n| Wins : " + autoWins + " | Losses: " + autoLosses + " |");
+                        tossResultText.append("\n| Guesses \"Head\": " + heads + " | Guesses \"Tails\": " + tails + " |");
+                        tossResultText.append("\n| Results \"Head\": " + headsR + " | Results \"Tails\": " + tailsR + " |");
 
                         try {
                             
@@ -271,6 +291,10 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                     case "Probability":
                         autoWins = 0;
                         autoLosses = 0;
+                        heads = 0;
+                        tails = 0;
+                        headsR = 0;
+                        tailsR = 0;
                         
                         
                         try {
@@ -283,16 +307,18 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                             /* Parses the ints from the auto run and converts it to 
                              * one string to be read by the StrategyProbabilistic Class. 
                              */
-                            for (int s : openData) 
+                            
+
+                            ListIterator it = openData.listIterator();
+                            while (it.hasNext()) 
                             {
-                                sbProbResult.append("");
-                                sbProbResult.append(s);
+                                sbProbResult.append(it.next());
                             }
                             
-                            for (int t : guessIntData) 
+                            ListIterator gIt = guessIntData.listIterator();
+                            while(gIt.hasNext())
                             {
-                                sbProbGuess.append("");
-                                sbProbGuess.append(t);
+                                sbProbGuess.append(gIt.next());
                             }
 
                             tossResultText.setText(null);
@@ -313,7 +339,7 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                                 
                                 ProbFlip flipGuess = new ProbFlip(probGuess);
                                 flipGuess.probToss();
-                                guessString = flip.getResultString();
+                                guessString = flipGuess.getResultString();
                                 
                                 if (guessString.equals("Heads")) 
                                 {
@@ -323,13 +349,16 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                                         {
                                             tossResultText.append("... You Win!");
                                             autoWins++;
-                                        } 
+                                            headsR++;
+                                        } // if (flipResult.equals("Heads"))
                                         else 
                                         {
                                             tossResultText.append("... Sorry, You Lose :(");
                                             autoLosses++;
-                                        }
-                                } 
+                                            tailsR++;
+                                        } // Else (flipResult.equals("Heads"))
+                                     heads++;
+                                } // if(guessString.equals("Heads")) 
                                 else 
                                 {
                                 tossResultText.append("\n" + "The Probability Guess : "
@@ -338,13 +367,17 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                                         {
                                             tossResultText.append("... You Win!");
                                             autoWins++;
-                                        } 
+                                            tailsR++;
+                                        } // if (flipResult.equals("Tails"))
                                         else 
                                         {
                                             tossResultText.append("... Sorry, You Lose :(");
                                             autoLosses++;
-                                        }
-                                 }
+                                            headsR++;
+                                        } // else (flipResult.equals("Tails"))
+                                        
+                                        tails++;
+                                 } // else (guessString.equals("Heads"))
                                 
                                 
                                 probCount++;
@@ -352,6 +385,8 @@ public class MOLLAR_HOMEWORK1_CMSC325 extends JPanel implements ActionListener
                             
                             //Displays toss results to user
                         tossResultText.append("\n| Wins : " + autoWins + " | Losses: " + autoLosses + " |");
+                        tossResultText.append("\n| Guesses \"Head\": " + heads + " | Guesses \"Tails\": " + tails + " |");
+                        tossResultText.append("\n| Results \"Head\": " + headsR + " | Results \"Tails\": " + tailsR + " |");
 
 
                         } catch (FileNotFoundException ex) {

@@ -1,0 +1,30 @@
+================================================================================
+|                          COIN TOSS INSTRUCTIONS                              |
+================================================================================
+
+----------------------------   FILE LIST   -------------------------------------
+
+INSTRUCTIONS.txt - Brief Explanation of the game and how to run it.
+AUTO.png - Screen shot of the results from the Random 100 coin tosses.
+PROB.png - Screen shot of the results from the Probabilistic 100 coin tosses.
+WORKING.png - Screen shot showing the JMonkey SDK working properly on computer.
+SMOLLAR_HW1.docx - Result comparison.
+MOLLAR_HOMEWORK1_CMSC325.java - entry class for the game
+resultData.ser - String results from the Automatic Toss
+resultIntData.ser - Integer results from the Automatic Toss
+
+---------------------------   HOW TO PLAY   ------------------------------------
+
+1) The game gives 3 different play modes, Auto, Manual and Probability
+2) The Automatic version should be ran first, it feeds information to the other
+    parts of the program.
+3) Once the Automatic button is pressed, it can be pressed multiple times to
+    regenerate results.
+4) The probability results are based on the random generated guesses and results
+    from the Automatic tosses.  This button can be pressed multiple times as
+    well.
+5) The Head/Tails functionality is simply for fun to do a quick one player game
+    by choosing "Heads" or "Tails".  The computer will toss a coin and display
+    the results in the Text area.
+6) Results are auto-saved in a file, but is overriden each time that the
+    Automatic game is replayed.  

@@ -1,7 +1,14 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Project: Homework 1
+ * CMSC 325 - Spring 2015
+ * Shamireya Mollar
+ * Professor Wiseman
+ * Due: January 18, 2015
+ * 
+ * PURPOSE: 
+ * The ProbFlip class is the handler for results for the probability tosses
  */
+
 package mollar_homework1_cmsc325;
 
 public class ProbFlip {
